@@ -4,19 +4,17 @@ A conversational, agent-driven kickoff system for starting new projects. Designe
 
 ## What this is
 
-Instead of a static doc you read top-to-bottom, this playbook is a structured conversation. You run `/kickoff` in Claude Code, and Claude conducts a guided intake — asking routing questions, pulling the right templates and tool catalogs based on your answers, conducting prior-art research with your approval, and generating a customized set of project docs at the end.
+Instead of a static doc you read top-to-bottom, this playbook is a structured conversation. You run `/kickoff` in Claude Code, and Claude runs a focused intake, sizes the kickoff to your project (Quick / Standard / Full), pulls the right templates and tool catalogs, conducts prior-art research with your approval, and generates a tier-appropriate set of project docs at the end.
 
 ## What it produces
 
-By the end of a kickoff session, you'll have:
+By the end of a kickoff session, you'll have a doc set scoped to the project's tier:
 
-- `PROJECT_BRIEF.md` — one-page problem, users, scope, success and kill criteria
-- `RESEARCH.md` — open-source prior art, competitive references, design references
-- `ARCHITECTURE.md` — stack decisions with alternatives considered
-- `CLAUDE.md` — agent context, skills loaded, MCPs wired, conventions
-- `DESIGN.md` — visual direction and component inventory (when relevant)
-- `BUILD_PLAN.md` — phased roadmap with definition-of-done per phase
-- A pre-flight checklist run (branch hygiene, repo init, secrets, etc.)
+- **Quick** (script, spike, throwaway) — `PROJECT_BRIEF.md` and `BUILD_PLAN.md` (lean), plus a clean repo on a feature branch.
+- **Standard** (a tool that will live) — adds `RESEARCH.md`, `ARCHITECTURE.md`, `CLAUDE.md`, and `DESIGN.md` when there's a UI, plus a full pre-flight.
+- **Full** (external / multi-tenant / compliance) — all of the above at full rigor.
+
+Each doc carries its decisions with rationale and alternatives considered: brief (problem, users, scope, kill criteria), research (prior art and references), architecture (the stack), `CLAUDE.md` (agent context, skills, MCPs), design (visual direction), build plan (phased roadmap with definition-of-done).
 
 ## How it's organized
 
@@ -60,15 +58,16 @@ In any new project directory:
 /kickoff
 ```
 
-Claude will conduct the intake conversationally. Each phase has a gate — Claude produces an artifact, you sign off, and only then does it move to the next phase. Actions like running web searches, cloning repos for inspection, or scaffolding files always ask before executing.
+Claude runs the intake conversationally, then proposes a tier that sizes the rest of the kickoff. Gates are weighted — expensive, hard-to-reverse decisions get an explicit confirmation; cheap, reversible ones proceed unless you flag them. For small or well-understood projects you can opt into express mode: all docs in one combined proposal, one correction round. Actions like running web searches, cloning repos, or scaffolding files always ask before executing.
 
 ## Philosophy
 
-Six principles drive the design:
+Seven principles drive the design:
 
-1. **Conversational over documentary.** Questions answered in flow, not forms filled out.
-2. **Gated phases.** Each phase produces an artifact you approve before moving on.
-3. **Routing first, depth second.** Project type determines which questions matter.
-4. **Piggyback before building.** Always look for prior art before writing new code.
-5. **Ask before acting.** Suggest searches, clones, scaffolds — never execute silently.
-6. **Reusable assets compound.** Each project feeds the catalog for the next.
+1. **Conversational over documentary.** A focused intake asks questions; every later phase infers and proposes, not forms filled out.
+2. **Adaptive scope first.** The kickoff sizes itself — Quick, Standard, or Full — before it goes deep.
+3. **Weighted gates.** Expensive, hard-to-reverse decisions get an explicit confirmation; cheap, reversible ones proceed unless you flag them.
+4. **Infer the pertinent, ask the load-bearing unknowns.** Decision trees populate proposals; a question is reserved for facts only you have, or a hard-to-reverse decision Claude can't infer with confidence.
+5. **Piggyback before building.** Always look for prior art before writing new code.
+6. **Ask before acting.** Suggest searches, clones, scaffolds — never execute silently.
+7. **Reusable assets compound.** Each project feeds the catalog for the next.

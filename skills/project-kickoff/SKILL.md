@@ -5,7 +5,7 @@ description: Use this skill when starting a new project, scaffolding a new repo,
 
 # Project Kickoff Skill
 
-This skill conducts a structured, conversational kickoff for new projects. Instead of writing code immediately, it walks the user through six gated phases that produce a complete foundation of project docs.
+This skill conducts a structured, conversational kickoff for new projects. Instead of writing code immediately, it runs a focused intake, sizes the kickoff to the project (Quick / Standard / Full), and produces a tier-appropriate foundation of project docs with weighted gates.
 
 ## When to invoke
 
@@ -24,12 +24,14 @@ Do NOT invoke for:
 
 1. Locate the playbook root. Check for `~/code/project-kickoff-playbook/` first. If not there, ask the user where it lives.
 2. Read `<playbook-root>/kickoff.md` — this is the master flow.
-3. Begin Phase 0 (Pre-flight) and proceed phase by phase, gating at each artifact.
+3. Begin Phase 0 (Intake) → Phase 0.5 (propose a tier; offer express where applicable) → produce the tier's artifacts, phase by phase or in express mode, with weighted gates.
 
 ## Operating principles
 
-- **Conversational, not documentary.** Ask questions in small batches. Use interactive prompts. Never dump a wall of questions.
-- **Gated phases.** Each phase produces an artifact. Get explicit sign-off before moving on.
+- **Conversational, not documentary.** Phase 0 intake asks direct questions, conversationally. Every later phase infers and proposes — never a wall of questions.
+- **Adaptive scope.** After intake, propose a tier (Quick / Standard / Full) that selects which artifacts get produced. Revisable mid-flight; default conservatively when torn.
+- **Infer the pertinent; ask the load-bearing unknowns.** Decision trees are inference checklists, not question lists. Ask directly only for facts that live solely in the user's head, or for a one-way decision you can't infer with confidence — inferability isn't the test, stakes × confidence is. Rare and targeted; everything else is propose-and-correct.
+- **Weighted gates.** Hard-confirm one-way doors (auth, data model, scope, kill criteria); light-gate the reversible rest. Offer express — one combined proposal, one correction round — for Quick or when the user signals confidence.
 - **Suggest, don't execute.** Web searches, repo clones, file scaffolding, MCP installs — always propose and wait for approval.
 - **Pull, don't recite.** When a template, decision tree, or catalog entry is needed, read the actual file from the playbook.
 - **Glossary on demand.** Define any term the user might not know. If the user asks "what does X mean," stop and teach before continuing.
@@ -37,14 +39,12 @@ Do NOT invoke for:
 
 ## What the user gets at the end
 
-A new project directory containing:
-- `PROJECT_BRIEF.md` — problem, users, scope, success and kill criteria
-- `RESEARCH.md` — open-source prior art, competitive references, design references
-- `ARCHITECTURE.md` — stack decisions with alternatives considered
-- `CLAUDE.md` — agent context, skills loaded, MCPs wired, conventions
-- `DESIGN.md` — visual direction and component inventory (when relevant)
-- `BUILD_PLAN.md` — phased roadmap with definition-of-done per phase
-- A clean repo on a feature branch with secrets handling configured
+A new project directory, scoped to the tier:
+- **Quick** — `PROJECT_BRIEF.md` (lean), `BUILD_PLAN.md` (lean), and a clean repo on a feature branch.
+- **Standard** — adds `RESEARCH.md`, `ARCHITECTURE.md`, `CLAUDE.md`, and `DESIGN.md` when there's a UI.
+- **Full** — all of the above at full rigor, plus the complete pre-flight.
+
+Every doc carries its decisions with rationale and alternatives considered. `PROJECT_BRIEF.md` covers problem/users/scope/success and kill criteria; `RESEARCH.md` covers prior art and references; `ARCHITECTURE.md` the stack; `CLAUDE.md` agent context, skills, and MCPs; `DESIGN.md` visual direction; `BUILD_PLAN.md` the phased roadmap with definition-of-done per phase.
 
 ## Cross-cutting reminders
 
