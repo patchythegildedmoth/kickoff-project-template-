@@ -24,13 +24,14 @@ Then read:
 
 ## Then
 
-Begin Phase 0 (Pre-flight) as defined in `kickoff.md`. Ask the four pre-flight questions in one batch. Wait for answers. Proceed phase by phase, gating at each artifact.
+Begin Phase 0 (Intake) as defined in `kickoff.md` — the five intake questions, conversationally. Then Phase 0.5: propose a tier (Quick / Standard / Full) and, where applicable, offer express mode. Then produce the tier's artifacts, phase by phase (default) or in express mode, with weighted gates.
 
 ## Critical rules
 
 - **Ask before executing.** Web searches, repo clones, file creation, MCP installs — propose each action and wait for explicit approval.
-- **One small batch of questions per turn.** Use interactive prompts where available. The user is often on mobile.
-- **Gate every phase.** Produce the artifact, get sign-off, then move on.
+- **Intake is the only question phase.** Phase 0's five questions, conversationally; everything after infers and proposes. Use interactive prompts where available — the user is often on mobile.
+- **Tier first.** Propose Quick/Standard/Full before any artifact. It's revisable mid-flight.
+- **Weighted gates.** Hard-confirm one-way decisions (auth, data model, multi-tenancy, scope, kill criteria); light-gate the reversible rest.
 - **Pull templates from the playbook.** Don't recite from memory — read the actual template files.
 - **Capture decisions with rationale.** Every meaningful choice goes into the relevant doc.
 

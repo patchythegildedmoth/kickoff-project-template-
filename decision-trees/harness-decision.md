@@ -54,10 +54,8 @@ If the user already has a working harness (e.g., Consul) configured to their pre
 - **Different shape (e.g., new domain, different blast radius profile):** consider whether the existing harness can be extended or whether a new one fits better
 - **One-off project:** if it doesn't justify reuse, interactive Claude Code is fine
 
-## Decision question for kickoff
+## Inferring this at kickoff
 
-Ask the user:
+Don't ask the user to choose. Infer the harness approach from Phase 0 and the project type: a long backlog of similar, well-bounded tasks with low blast radius points to a harness; exploratory work, frequent judgment calls, or high blast radius points to interactive-only. Propose the inferred approach as a tagged `(assumed)` value in the Phase 4 summary.
 
-> "Does this project have a long backlog of similar tasks where autonomous execution would help, or is it more exploratory where you want to be in the loop on each step?"
-
-Their answer routes to harness setup, harness reuse, or interactive-only.
+The harness choice is a **one-way door** (re-architecting around a harness later is expensive), so it gets a hard gate — state the proposed approach (harness setup, harness reuse, or interactive-only) and the reasoning, and require explicit confirmation before proceeding. If the only thing you genuinely can't infer is the user's appetite to step away from the loop, fold that into the ledger as a `U` unknown — not a standalone question.
