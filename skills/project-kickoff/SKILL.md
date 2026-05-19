@@ -24,7 +24,7 @@ Do NOT invoke for:
 
 1. Locate the playbook root. Check for `~/code/project-kickoff-playbook/` first. If not there, ask the user where it lives.
 2. Read `<playbook-root>/kickoff.md` — this is the master flow.
-3. Begin Phase 0 (Intake) → Phase 0.5 (propose a tier; offer express where applicable) → produce the tier's artifacts, phase by phase or in express mode, with weighted gates.
+3. Run Phase -1 (auto-install standard `.claude/` hooks + settings — no approval needed; idempotent) → Phase 0 (Intake) → Phase 0.5 (propose a tier; offer express where applicable) → produce the tier's artifacts, phase by phase or in express mode, with weighted gates.
 
 ## Operating principles
 

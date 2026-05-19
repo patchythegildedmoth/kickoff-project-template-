@@ -4,11 +4,19 @@ A conversational, agent-driven kickoff system for starting new projects. Designe
 
 ## What this is
 
-Instead of a static doc you read top-to-bottom, this playbook is a structured conversation. You run `/kickoff` in Claude Code, and Claude runs a focused intake, sizes the kickoff to your project (Quick / Standard / Full), pulls the right templates and tool catalogs, conducts prior-art research with your approval, and generates a tier-appropriate set of project docs at the end.
+Instead of a static doc you read top-to-bottom, this playbook is a structured conversation. You run `/kickoff` in Claude Code, and Claude installs a small piece of standard project infrastructure (a SessionStart hook + `settings.json`), runs a focused intake, sizes the kickoff to your project (Quick / Standard / Full), pulls the right templates and tool catalogs, conducts prior-art research with your approval, and generates a tier-appropriate set of project docs at the end.
 
 ## What it produces
 
-By the end of a kickoff session, you'll have a doc set scoped to the project's tier:
+Every tier starts with the same baseline infrastructure (Phase -1, runs automatically before intake):
+
+- `.claude/hooks/check-remote-sync.sh` — SessionStart hook that warns when the local branch is behind its remote. Never blocks, never modifies the repo.
+- `.claude/settings.json` — registers the hook above. The user can extend it later.
+- `.gitignore` reconciliation if needed (a blanket `.claude/` ignore is rewritten to `.claude/worktrees/` so the hook + settings can be tracked).
+
+Existing hooks and `settings.json` are never overwritten. The `.gitignore` reconciliation only triggers on a blanket `.claude/` ignore — otherwise it's a no-op. This phase doesn't ask — it's table stakes.
+
+By the end of a kickoff session, you'll also have a doc set scoped to the project's tier:
 
 - **Quick** (script, spike, throwaway) — `PROJECT_BRIEF.md` and `BUILD_PLAN.md` (lean), plus a clean repo on a feature branch.
 - **Standard** (a tool that will live) — adds `RESEARCH.md`, `ARCHITECTURE.md`, `CLAUDE.md`, and `DESIGN.md` when there's a UI, plus a full pre-flight.
@@ -58,7 +66,7 @@ In any new project directory:
 /kickoff
 ```
 
-Claude runs the intake conversationally, then proposes a tier that sizes the rest of the kickoff. Gates are weighted — expensive, hard-to-reverse decisions get an explicit confirmation; cheap, reversible ones proceed unless you flag them. For small or well-understood projects you can opt into express mode: all docs in one combined proposal, one correction round. Actions like running web searches, cloning repos, or scaffolding files always ask before executing.
+Claude first installs the standard `.claude/` hooks and settings (Phase -1, idempotent, no approval needed) — this is the one exception to "ask before acting." Then it runs the intake conversationally and proposes a tier that sizes the rest of the kickoff. Gates are weighted — expensive, hard-to-reverse decisions get an explicit confirmation; cheap, reversible ones proceed unless you flag them. For small or well-understood projects you can opt into express mode: all docs in one combined proposal, one correction round. Web searches, repo clones, and project-doc scaffolding still always ask before executing.
 
 ## Philosophy
 
