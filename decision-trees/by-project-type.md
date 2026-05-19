@@ -1,6 +1,14 @@
 # Decision Tree: By Project Type
 
-After the routing question identifies the project type, load the matching section to guide subsequent questions and tool recommendations.
+Once you've inferred the project type (you infer it — there is no routing *question*; the Phase 0 description plus directory context tells you), load the matching section.
+
+**This is an inference checklist, not a question list.** Use the items below to populate the Phase 1 proposal with tagged values. Each item is one of:
+
+- **[infer]** — derive it from context, put it in the proposal body tagged `(assumed)`.
+- **[default]** — apply the stated default, tag `(assumed)`.
+- **[unknowable]** — a fact only the user has; fold it into the assumptions ledger as a flagged assumption or a `U` unknown. Never a standalone question.
+
+An item marked **⚑** is a one-way door — load-bearing and hard to reverse. Infer it only if you can write a *specific* basis line. If the honest basis would be generic ("typical for this project shape"), ask it as a single targeted question instead — the sanctioned exception to intake-only questioning. Never silently default a ⚑ item; inferability is not the test, stakes × confidence is.
 
 ---
 
@@ -8,14 +16,14 @@ After the routing question identifies the project type, load the matching sectio
 
 *Dashboards, analytics, internal tools over data. Examples: BI dashboards, reporting tools, position monitors.*
 
-### Additional Phase 1 questions
+### Inference checklist (populate the Phase 1 proposal — do not ask)
 
-- What are the data sources? (files uploaded by user, API, database, scraped)
-- What's the refresh cadence? (real-time, hourly, daily, on-demand)
-- How big is the data? (rows, MB)
-- Who owns the data — is access already granted or do we need to negotiate it?
-- Is the analysis exploratory (user pivots and slices) or fixed (canned reports)?
-- What decisions does the data drive? (this shapes what gets surfaced first)
+- **Data sources** — [infer] from the description (uploaded files / API / database / scraped). Propose the most likely, tag (assumed).
+- **Refresh cadence** — [default] on-demand unless the description implies live data. Propose it, tag (assumed).
+- **Data size** — [infer] an order of magnitude from context (a few sheets vs. millions of rows), tag (assumed). It only changes the stack at the extremes.
+- **Data ownership / access granted** — [unknowable]. Ledger: "U: assuming you already have access to <source> — flag if it needs to be negotiated; it changes timeline."
+- **Analysis style** — [default] exploratory (user pivots and slices) unless canned reports are described. Propose it, tag (assumed).
+- **Decisions the data drives** — [infer] from the stated purpose; present as the assumed "what we surface first," for correction.
 
 ### Default stack signals
 
@@ -45,13 +53,13 @@ After the routing question identifies the project type, load the matching sectio
 
 *Generated proposals, reports, structured documents. Examples: bid generators, contract drafters, briefing tools.*
 
-### Additional Phase 1 questions
+### Inference checklist (populate the Phase 1 proposal — do not ask)
 
-- What's the input? (form fields, conversation, uploaded data, all three)
-- What's the output format? (PDF, DOCX, web page, email)
-- Are there templates that must be respected (legal, brand, regulatory)?
-- Is the user the author or the reviewer? (changes review/edit affordances needed)
-- Volume — one-off or many similar documents?
+- **Input** — [infer] from the description (form fields / conversation / uploaded data / a mix). Propose the likely mix, tag (assumed).
+- **Output format** — [infer] from what's being produced (PDF / DOCX / web page / email). Propose it, tag (assumed).
+- **Mandatory templates** — [unknowable] whether legal/brand/regulatory templates must be matched exactly. Ledger: "U: assuming no externally-mandated template — flag if there's one we must match."
+- **Author vs. reviewer** — [default] author (needs generation plus an edit loop) unless described as review-only. Propose it, tag (assumed).
+- **Volume** — [default] many similar documents (justifies templating) unless it reads like a one-off. Propose it, tag (assumed).
 
 ### Default stack signals
 
@@ -79,13 +87,13 @@ After the routing question identifies the project type, load the matching sectio
 
 *Autonomous builders, scrapers, scheduled pipelines. Examples: Consul-style harnesses, content pipelines, monitoring agents.*
 
-### Additional Phase 1 questions
+### Inference checklist (populate the Phase 1 proposal — do not ask)
 
-- What triggers it? (schedule, webhook, manual, file drop)
-- What's the failure mode if it goes wrong silently? (monetary loss, bad content shipped, nothing)
-- Does it need human-in-the-loop checkpoints?
-- How will the user observe what it's doing? (logs, dashboard, notifications)
-- What's the maximum cost per run, and how do we cap it?
+- **Trigger** — [infer] from the description (schedule / webhook / manual / file drop). Propose the likely one, tag (assumed).
+- **Silent-failure blast radius** ⚑ — [infer] from what it touches (monetary loss / bad content shipped / nothing). State the assumed blast radius — it sets how many guardrails the build plan needs. If you can't tell whether a wrong run loses money or just wastes time, ask; the answer changes the whole guardrail budget.
+- **Human-in-the-loop checkpoints** — [default] required on any consequential or irreversible action, none otherwise. Propose the checkpoint set, tag (assumed).
+- **Observability** — [default] structured logs + error alerts + run history (the default stack below mandates it). State it as the proposed approach.
+- **Cost cap** — [default] a conservative per-run token/$ ceiling. Propose a number, tag (assumed); flag the ceiling as a `U` if only the user knows the acceptable spend.
 
 ### Default stack signals
 
@@ -114,14 +122,14 @@ After the routing question identifies the project type, load the matching sectio
 
 *Wiring two systems together. Examples: API bridges, sync tools, ETL.*
 
-### Additional Phase 1 questions
+### Inference checklist (populate the Phase 1 proposal — do not ask)
 
-- What are the two (or more) systems?
-- Direction of sync? (one-way, two-way, conflict resolution if two-way)
-- Cadence? (real-time webhook, scheduled batch, on-demand)
-- Are auth credentials and API access already in hand?
-- What's the data model in each system, and where does it diverge?
-- What happens when a sync fails partway?
+- **Systems involved** — [infer] from the description / repo / named prior art. Tag (assumed); the user corrects if wrong.
+- **Sync direction** ⚑ — [default] one-way unless the description implies bidirectional. Propose one-way, tag (assumed). Two-way + conflict resolution is a one-way door — if you can't tell from context which it is, ask; if you propose it, gate it hard in Phase 3.
+- **Cadence** — [default] scheduled batch unless a webhook source is named. Propose it, tag (assumed).
+- **Auth credentials / API access in hand** — [unknowable]. Don't ask. Ledger: "U: assuming you don't yet have prod API credentials for <system> — flag if you do; it changes Phase 7 sequencing."
+- **Data model divergence** — [infer] a likely mapping from the systems named; present it as an assumed mapping table for correction.
+- **Partial-failure behaviour** — [default] idempotent retry with logged attempts (the default stack below mandates it). State it as the proposed behaviour, tag (assumed).
 
 ### Default stack signals
 
@@ -150,14 +158,14 @@ After the routing question identifies the project type, load the matching sectio
 
 *Something other people will use. Examples: SaaS, marketplaces, public tools.*
 
-### Additional Phase 1 questions
+### Inference checklist (populate the Phase 1 proposal — do not ask)
 
-- Who pays — users, advertisers, or no one yet?
-- What's the distribution channel? (organic, paid, partnerships, app store)
-- Multi-tenant from day one, or single-tenant first?
-- What's the support model when things break for users?
-- Compliance scope? (GDPR, HIPAA, SOC2, none)
-- Brand and naming — owned or TBD?
+- **Who pays** — [unknowable] (revenue model + willingness-to-pay evidence live only with the user). Ledger: "U: assuming users pay directly — confirm the model; it shapes the whole product."
+- **Distribution channel** — [infer] a likely channel from the domain (organic / paid / partnerships / app store). Propose it, tag (assumed).
+- **Multi-tenant from day one** ⚑ — [default] multi-tenant for an external product (retrofitting is a one-way door). Propose multi-tenant, tag (assumed); hard-gate it in Phase 3. If anything suggests it might stay single-tenant, ask rather than assume — the default is safe but not free.
+- **Support model** — [default] async email / issue triage to start. Propose it, tag (assumed).
+- **Compliance scope** — [unknowable]. Ledger: "U: assuming no formal compliance regime (GDPR/HIPAA/SOC2) applies — flag if one does; it's a Full-tier driver."
+- **Brand & naming** — [unknowable] whether owned or TBD. Ledger: "U: assuming the name is a placeholder — flag if it's locked."
 
 ### Default stack signals
 
@@ -187,4 +195,8 @@ After the routing question identifies the project type, load the matching sectio
 
 ## Other
 
-*If none fits, ask the user to describe the project shape, then improvise — but still gate phases and produce the standard artifacts.*
+If none of the above fits, infer the project's shape from the Phase 0 description and improvise the inference checklist — still propose a tier, gate phases by door-weight, and produce the standard artifacts. Don't re-ask for a description Phase 0 already captured.
+
+---
+
+Never present this file's items as a numbered question list to the user. If you find yourself writing "A few questions:", stop — convert them to `(assumed)` values plus a ledger instead.

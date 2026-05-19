@@ -1,6 +1,6 @@
 # Tool Catalog: Reusable Assets
 
-The library of personal/team artifacts that compound across projects. At Phase 4 of kickoff, walk the user through these and ask which apply to the new project.
+The library of personal/team artifacts that compound across projects. At Phase 4 of kickoff, detect which of these exist and propose the ones that apply to the new project — don't ask the user to enumerate them.
 
 ## Personal context files
 
@@ -46,14 +46,18 @@ Once the user has wrestled with a vendor's API or system once, capture the lesso
 
 Each project's CLAUDE.md is a learning artifact. When starting a similar project, scan past CLAUDE.md files for patterns to lift.
 
-## Inventory question for kickoff
+## Inventory at kickoff
 
-At Phase 4, ask:
+At Phase 4, detect what exists (check `~/.claude/`, prior project CLAUDE.md files, design playbooks) and propose the applicable set as a tagged summary — the user corrects it:
 
-> "Which of your reusable assets should we load into this project's context? I'll suggest based on the project type:
-> - [auto-suggested list]
-> 
-> Anything to add or remove?"
+> Reusable assets to pull in:
+> - BUILDER_PROFILE — yes (found at ~/.claude/...) (assumed)
+> - DECISION_POLICY — yes (found at ~/.claude/...) (assumed)
+> - Prior CLAUDE.md — no (greenfield) (assumed)
+>
+> Look right? What would you change?
+
+This rides the ledger's silence-confirms rule — it's a two-way door.
 
 ## Maintaining the library
 
