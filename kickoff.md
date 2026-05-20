@@ -11,7 +11,7 @@ Before starting, internalize these:
 - **Infer the pertinent; ask the load-bearing unknowns.** Project-type decision trees are *inference checklists*, not question lists — use them to populate proposals with best-guess values, tagged `(assumed)`. Two cases still warrant a direct question: (1) a fact that lives solely in the user's head — credentials in hand, compliance scope, granted access, willingness-to-pay; (2) a **one-way decision you cannot infer with confidence**. Inferability is not the test — stakes × confidence is. You can always produce a plausible guess for auth model or multi-tenancy; that does not mean you should. If the honest basis for a one-way guess would be generic ("typical for this project shape"), that *is* the signal to ask, not to infer. Keep such questions targeted and rare — 0–2 per kickoff; everything else stays propose-and-correct.
 - **Weighted gates, not uniform gates.** Every artifact gets a gate, but gates come in two weights. *Two-way doors* — cheap, reversible (library picks, aesthetic, file layout, sprint cadence) — get a light gate: state what you're proceeding with and move on unless the user flags something. *One-way doors* — expensive, hard to reverse (auth model, multi-tenancy, data model, hosting platform, payments, compliance posture) — get a hard gate: list each one explicitly and require confirmation before proceeding. When unsure which weight a decision is, treat it as one-way.
 - **Express when warranted.** For the Quick tier, or when the user signals confidence ("just give me the docs," "I know what I want"), offer to produce all tier artifacts in one combined proposal with a single correction round. Phase-by-phase is the default; express is offered, never assumed, and never collapses one-way rigor or "suggest, don't execute."
-- **Suggest, don't execute.** Web searches, repo clones, file scaffolding, MCP installs — propose them and wait for approval each time.
+- **Suggest, don't execute.** Web searches, repo clones, file scaffolding, MCP installs — propose them and wait for approval each time. **One exception:** Phase -1 infrastructure setup (the standard `.claude/` hooks + settings) runs automatically without asking, because it's table stakes for every project and never overwrites an existing hook or `settings.json`. (Phase -1 may rewrite *one* `.gitignore` line when a blanket `.claude/` ignore would hide the hook from version control — see Phase -1 for the exact rule.)
 - **Pull, don't push.** When the user's answer triggers a relevant template, decision tree, or catalog entry, load it from the playbook rather than reciting from memory.
 - **Glossary on demand.** If you use a term the user might not know, define it inline. If the user asks "what does X mean," stop and explain before continuing.
 - **Capture decisions.** Every meaningful choice — stack, scope, library — gets written to the appropriate doc with rationale and alternatives considered.
@@ -35,6 +35,25 @@ Silence on a two-way item confirms it.
 Keep the ledger to assumptions that actually matter — 3–8 items, not 20. Don't list trivial defaults. **Silence confirms two-way items only.** One-way decisions are listed separately at the gate and always need an explicit yes (see *Weighted gates*).
 
 Tag any assumed value that feeds a one-way door with its confidence — `(assumed, high)` or `(assumed, med)`. A one-way assumption you'd honestly mark *low* does not belong in the ledger at all: it should have been a direct question (see *Infer the pertinent*). The confidence tag exists so the user can tell a strong inference from a weak one — never present them as visually identical.
+
+## Phase -1: Project Infrastructure Setup
+
+Runs before intake. This is the one phase that acts without asking — the standard `.claude/` infrastructure (hooks + settings) is table stakes for every project, not a choice to relitigate.
+
+Do the following in the current working directory, idempotently. Skip any step whose destination already exists; never overwrite a hook or settings file the user may have customized.
+
+1. **Hooks directory.** Create `.claude/hooks/` if missing (`mkdir -p .claude/hooks`).
+2. **Remote-sync hook.** If `.claude/hooks/check-remote-sync.sh` does not exist, copy `<playbook-root>/templates/check-remote-sync.sh` into place and make it executable (`chmod +x .claude/hooks/check-remote-sync.sh`). This is a SessionStart hook that warns when the local branch is behind its remote tracking branch; it never blocks and never modifies the repo.
+3. **Settings.** If `.claude/settings.json` does not exist, copy `<playbook-root>/templates/settings.json` into place. The shipped settings register the SessionStart hook above; the user can extend it later.
+4. **.gitignore reconciliation.** If a `.gitignore` exists *and* it contains a line that excludes all of `.claude/` (any of `.claude/`, `.claude`, or `/.claude/`), replace that line with `.claude/worktrees/` so the new hook and settings can be tracked while local worktree state stays ignored. If no `.gitignore` exists, do not create one — leave the directory alone.
+
+After running, tell the user once, briefly:
+
+> "Installed `.claude/hooks/check-remote-sync.sh` and `.claude/settings.json` so this project warns you on session start when the branch is behind its remote. Skipped any pieces you already had."
+
+No questions, no gates, no AskUserQuestion — this is the carve-out from *Suggest, don't execute*. If a step fails (permission error, disk full, etc.), report what failed in one line and continue to Phase 0; intake is more valuable than blocking on hook install.
+
+Output: a `.claude/` directory with the standard hook + settings in place. No artifact file.
 
 ## Phase 0: Intake
 
