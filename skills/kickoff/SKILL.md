@@ -1,5 +1,5 @@
 ---
-name: project-kickoff
+name: kickoff
 description: Use this skill when starting a new project, scaffolding a new repo, or when the user runs /kickoff. Provides a structured conversational intake flow that produces a customized set of project docs (brief, research, architecture, CLAUDE.md, design, build plan) before any code is written. Trigger on phrases like "starting a new project", "kicking off", "new repo", "project setup", or when the user wants to plan before building.
 ---
 
@@ -22,7 +22,7 @@ Do NOT invoke for:
 
 ## How to invoke
 
-1. Locate the playbook root. Check for `~/code/project-kickoff-playbook/` first. If not there, ask the user where it lives.
+1. Locate the playbook root. Check for `~/Code/Master Docs/project-kickoff-playbook/` first. If not there, ask the user where it lives.
 2. Read `<playbook-root>/kickoff.md` — this is the master flow.
 3. Run Phase -1 (auto-install standard `.claude/` hooks + settings — no approval needed; idempotent) → Phase 0 (Intake) → Phase 0.5 (propose a tier; offer express where applicable) → produce the tier's artifacts, phase by phase or in express mode, with weighted gates.
 

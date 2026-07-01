@@ -31,11 +31,9 @@ project-kickoff-playbook/
 ├── README.md                   ← you are here
 ├── kickoff.md                  ← the master flow Claude reads to conduct intake
 ├── build-someday.md            ← wishlist of playbook improvements
-├── commands/
-│   └── kickoff.md              ← Claude Code slash command entry point
 ├── skills/
-│   └── project-kickoff/
-│       └── SKILL.md            ← skill auto-loaded for new project work
+│   └── kickoff/
+│       └── SKILL.md            ← the /kickoff skill, auto-loaded for new project work
 ├── templates/                  ← fill-in-the-blank doc templates
 ├── decision-trees/             ← branching logic by project type
 ├── tool-catalog/               ← curated GitHub projects, libraries, MCPs
@@ -51,11 +49,8 @@ project-kickoff-playbook/
 git clone <your-fork-url> ~/code/project-kickoff-playbook
 cd ~/code/project-kickoff-playbook
 
-# 2. Symlink the slash command
-ln -s "$(pwd)/commands/kickoff.md" ~/.claude/commands/kickoff.md
-
-# 3. Symlink the skill
-ln -s "$(pwd)/skills/project-kickoff" ~/.claude/skills/project-kickoff
+# 2. Symlink the skill (invoked as /kickoff)
+ln -s "$(pwd)/skills/kickoff" ~/.claude/skills/kickoff
 ```
 
 ## Usage
