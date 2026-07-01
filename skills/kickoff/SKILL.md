@@ -22,9 +22,8 @@ Do NOT invoke for:
 
 ## How to invoke
 
-1. Locate the playbook root. Check for `~/Code/Master Docs/project-kickoff-playbook/` first. If not there, ask the user where it lives.
-2. Read `<playbook-root>/kickoff.md` — this is the master flow.
-3. Run Phase -1 (auto-install standard `.claude/` hooks + settings — no approval needed; idempotent) → Phase 0 (Intake) → Phase 0.5 (propose a tier; offer express where applicable) → produce the tier's artifacts, phase by phase or in express mode, with weighted gates.
+1. Read the master flow directly from `~/Code/Master Docs/project-kickoff-playbook/kickoff.md` (its parent directory is `<playbook-root>`). Do not narrate the lookup or run a separate `ls`/directory check first — just read the file and begin. Only if it isn't there (the playbook isn't cloned on this machine, or lives at a different path) should you then ask the user where the playbook lives, and read `kickoff.md` from there.
+2. Run Phase -1 (auto-install standard `.claude/` hooks + settings — no approval needed; idempotent) → Phase 0 (Intake) → Phase 0.5 (propose a tier; offer express where applicable) → produce the tier's artifacts, phase by phase or in express mode, with weighted gates.
 
 ## Operating principles
 
